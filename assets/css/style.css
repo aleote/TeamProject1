@@ -1,14 +1,49 @@
+*{
+  font-family: 'Dosis', sans-serif;
+}
 
-footer{
-  position: fixed;
-  bottom: 0;
+html{
+  background-image: url("../images/topography.png");
+}
+
+.subheader{
+  width: 100%;
+  text-align: center;
+}
+
+nav{
+  position: relative;
+  top: 0;
   width: 100%;
 }
 
-body {
-	background: #eee;
+.nav-wrapper a h1{
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
-.brand-logo {
-	color: #009;
+.nav-wrapper p{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+footer{
+  /*position: fixed;
+  bottom: 0;*/
+  width: 100%;
+}
+
+.about{
+  margin-top: 25px;
+}
+
+.last{
+  margin-bottom: 30px;
+}
+
+.about p{
+  padding: 5px;
+  border: 1px solid #ee6e73;
+  border-radius: 2px;
+  box-shadow: 2px 2px 5px #c3c3c3;
 }
