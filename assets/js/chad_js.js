@@ -1,0 +1,88 @@
+// Nutrionix API information
+var nxAppId = "e1023908";
+var nxAppKey = "b27da09f2dfe35098a3ba4733fd361e8";
+// Google API key
+var gApiKey = "AIzaSyAjnWWbP30ssxxKP-jULse9lWmbR9AIaZ8";
+// holds the length of the response array ajax returns
+var length;
+// variable to hold output of chooseRandomMealArrayIndex
+var randomMealArrayIndex;
+//function that gives us a random number we will use on our randomMealArray
+function chooseRandomMealArrayIndex (){
+		randomMealArrayIndex = Math.floor(Math.random()*(4));
+		console.log("index for mealArray: " + randomMealArrayIndex);
+	}
+// in the future, var userInput = $("#calories").val().trim();
+// for now, use 1000 to see how the program works
+var userInput = 1000;
+//variable that will hold a random index to choose a member in the array ajax returns
+var randomAjaxMealIndex;
+//array we will use to build our meals, these strings when randomly selected will be placed into our query in our ajax function
+var randomMealArray = ["burger", "chicken", "salad", "french fries"];
+//get a random index based on the randomMealArray size
+chooseRandomMealArrayIndex();
+//variable that picks that member in the randomMealArray
+var randomMeal = randomMealArray[randomMealArrayIndex];
+console.log("random meal from mealArray: " + randomMeal);
+
+$.ajax({
+        url: "https://api.nutritionix.com/v1_1/search",
+        method: "POST",
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        data: JSON.stringify({
+          "appId": nxAppId,
+          "appKey": nxAppKey,
+          "queries": {
+          	"brand_name": "mcdonald",
+          	"item_name": randomMeal
+          },
+          "filters": {
+          	"nf_calories": {
+          	"from": 0,
+          	"to": userInput
+          	}
+          },
+          "fields": [
+    			"item_name",
+    			"nf_calories",
+    			"nf_protein",
+    			"nf_total_carbohydrate",
+    			"nf_total_fat"   			
+  				],
+        })
+  	}).done(function(response){
+  		//function that outputs random index based on size of array ajax returns
+  		function chooseRandomAjaxMealIndex(){
+	length = response.hits.length;
+	return Math.floor(Math.random()*(length));
+}
+        console.log(response);
+        //variable that holds chooseRandomAjaxMealIndex call
+       	randomAjaxMealIndex = chooseRandomAjaxMealIndex();
+       	console.log("randomAjaxMealIndex: " + randomAjaxMealIndex);
+       	//variable that holds the caloric value from the random member of the array that ajax returns
+        var firstItemCalories = response.hits[randomAjaxMealIndex].fields.nf_calories;
+        console.log(firstItemCalories);
+        //subtract those calories from the user inputted value
+        userInput -= firstItemCalories;
+        //if there are still calories left, then find more food to eat
+        if(userInput>0){
+        	console.log(randomMeal);
+        	// rerun until userinput (which is just calories left to eat is 0)
+        } else {
+        	//if no more calories then stop
+        	console.log("no more calories left");
+        	return;
+        }        
+    }).fail(function(error){
+        console.log(error);
+    });
+
+
+
+
+
+
+
