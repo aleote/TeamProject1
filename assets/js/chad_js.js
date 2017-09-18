@@ -19,6 +19,8 @@ var userInput = 1000;
 var randomAjaxMealIndex;
 //array we will use to build our meals, these strings when randomly selected will be placed into our query in our ajax function
 var randomMealArray = ["burger", "chicken", "salad", "french fries"];
+//when item from ajax array is chosen, push to the finishedMealArray
+var finishedMealArray = [];
 //get a random index based on the randomMealArray size
 chooseRandomMealArrayIndex();
 //variable that picks that member in the randomMealArray
@@ -40,7 +42,7 @@ $.ajax({
           },
           "filters": {
           	"nf_calories": {
-          	"from": 0,
+          	"from": 100,
           	"to": userInput
           	}
           },
@@ -64,21 +66,23 @@ $.ajax({
        	console.log("randomAjaxMealIndex: " + randomAjaxMealIndex);
        	//variable that stores the name of the random item chosen from the array that ajax returns
        	var firstItemName = response.hits[randomAjaxMealIndex].fields.item_name;
+       	finishedMealArray.push(response.hits[randomAjaxMealIndex].fields);
         //variable that holds the caloric value of firstItemName
         var firstItemCalories = response.hits[randomAjaxMealIndex].fields.nf_calories;
         var firstItemProtein = response.hits[randomAjaxMealIndex].fields.nf_protein;
         var firstItemCarbs = response.hits[randomAjaxMealIndex].fields.nf_total_carbohydrate;
         var firstItemFat = response.hits[randomAjaxMealIndex].fields.nf_total_fat;
         console.log("first item: " + firstItemName);
-        console.log("calories of first item: " + firstItemCalories);
         console.log("calories/protein/carbs/fat of first item: " + firstItemCalories + ", " + firstItemProtein + "p/"
         	+ firstItemCarbs + "c/" + firstItemFat + "f");
         //subtract those calories from the user inputted value
         userInput -= firstItemCalories;
         console.log("Calories left now: " + userInput);
+        console.log("finishedMealArray: ");
+       	console.log(finishedMealArray);
         //if there are still calories left, then find more food to eat
         if(userInput>0){        	
-        	// rerun until userinput (which is just calories left to eat is 0)
+        	// rerun until userinput (which is just calories left to eat) is 0
         } else {
         	//if no more calories then stop
         	console.log("no more calories left");
