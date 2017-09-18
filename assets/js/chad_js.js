@@ -15,6 +15,7 @@ function chooseRandomMealArrayIndex (){
 // in the future, var userInput = $("#calories").val().trim();
 // for now, use 1000 to see how the program works
 var userInput = 1000;
+var flag = true;
 //variable that will hold a random index to choose a member in the array ajax returns
 var randomAjaxMealIndex;
 //array we will use to build our meals, these strings when randomly selected will be placed into our query in our ajax function
@@ -27,6 +28,7 @@ chooseRandomMealArrayIndex();
 var randomMeal = randomMealArray[randomMealArrayIndex];
 console.log("random meal from mealArray: " + randomMeal);
 
+for (var i = 0; i < 2; i++){
 $.ajax({
         url: "https://api.nutritionix.com/v1_1/search",
         method: "POST",
@@ -80,18 +82,14 @@ $.ajax({
         console.log("Calories left now: " + userInput);
         console.log("finishedMealArray: ");
        	console.log(finishedMealArray);
-        //if there are still calories left, then find more food to eat
-        if(userInput>0){        	
-        	// rerun until userinput (which is just calories left to eat) is 0
-        } else {
-        	//if no more calories then stop
-        	console.log("no more calories left");
-        	return;
-        }        
+        if (userInput<=100){
+        	flag = false; 
+        }
+        
     }).fail(function(error){
         console.log(error);
     });
-
+}
 
 
 
