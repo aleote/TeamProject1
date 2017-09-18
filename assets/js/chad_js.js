@@ -54,22 +54,30 @@ $.ajax({
         })
   	}).done(function(response){
   		//function that outputs random index based on size of array ajax returns
-  		function chooseRandomAjaxMealIndex(){
-	length = response.hits.length;
-	return Math.floor(Math.random()*(length));
-}
+  			function chooseRandomAjaxMealIndex(){
+					length = response.hits.length;
+					return Math.floor(Math.random()*(length));
+				}
         console.log(response);
         //variable that holds chooseRandomAjaxMealIndex call
        	randomAjaxMealIndex = chooseRandomAjaxMealIndex();
        	console.log("randomAjaxMealIndex: " + randomAjaxMealIndex);
-       	//variable that holds the caloric value from the random member of the array that ajax returns
+       	//variable that stores the name of the random item chosen from the array that ajax returns
+       	var firstItemName = response.hits[randomAjaxMealIndex].fields.item_name;
+        //variable that holds the caloric value of firstItemName
         var firstItemCalories = response.hits[randomAjaxMealIndex].fields.nf_calories;
-        console.log(firstItemCalories);
+        var firstItemProtein = response.hits[randomAjaxMealIndex].fields.nf_protein;
+        var firstItemCarbs = response.hits[randomAjaxMealIndex].fields.nf_total_carbohydrate;
+        var firstItemFat = response.hits[randomAjaxMealIndex].fields.nf_total_fat;
+        console.log("first item: " + firstItemName);
+        console.log("calories of first item: " + firstItemCalories);
+        console.log("calories/protein/carbs/fat of first item: " + firstItemCalories + ", " + firstItemProtein + "p/"
+        	+ firstItemCarbs + "c/" + firstItemFat + "f");
         //subtract those calories from the user inputted value
         userInput -= firstItemCalories;
+        console.log("Calories left now: " + userInput);
         //if there are still calories left, then find more food to eat
-        if(userInput>0){
-        	console.log(randomMeal);
+        if(userInput>0){        	
         	// rerun until userinput (which is just calories left to eat is 0)
         } else {
         	//if no more calories then stop
