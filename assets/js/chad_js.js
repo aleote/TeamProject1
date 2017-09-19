@@ -280,11 +280,11 @@ function decideNextItem() {
   } else {
     // if we have enough calories to add more items, but less than 330, we remove "burger" as an option, to minimize API errors
     // due to searching for burgers while not having enough calories for a burger
-    if (maxCalories <= 330) {
-      randomMealArray.splice("burger", 1);
-      console.log("burger was removed due to insufficient calories");
-      console.log("randomMealArray is now: " + randomMealArray);
-    }
+	    if (maxCalories <= 330) {
+	      randomMealArray.splice("burger", 1);
+	      console.log("burger was removed due to insufficient calories");
+	      console.log("randomMealArray is now: " + randomMealArray);
+    	}
 
     // now that we have checked we have enough calories, choose another search and choose another item from what the search returns
     chooseQuery();
