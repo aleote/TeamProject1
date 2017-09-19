@@ -69,7 +69,7 @@ function chooseQuery() {
     randomMeal = randomMealArray[randomizedIndex];
     console.log("random meal from mealArray: " + randomMeal);
   }
-  // use "ice cream" when calories are 200 or below
+  // use "ice cream" when calories are 250 or below
   else if (maxCalories <= 250) {
     randomMeal = "ice cream";
   } else {
@@ -129,6 +129,7 @@ function getFood() {
     })
   }).done(function(response) {
 
+    console.log("response is:");
     console.log(response);
 
     // function that returns random index that will be used to choose from the array the API returns
@@ -161,12 +162,12 @@ function getFood() {
     var mealItemName;
 
     // if API returns nothing for us to choose, choose a new search and choose an item from that
-    if (response.length === 0) {
+    if (response.hits.length === 0) {
 
-      console.log("ajax returned an array of length 0");
-      chooseQuery();
-      getFood();
-      return;
+      // console.log("that item doesn't seem to exist right now, try again");
+      // chooseQuery();
+      // getFood();
+      // return;
     } else {
       // if ajax does return someting, store what's randomly chosen 
       mealItemName = response.hits[randomAjaxMealIndex].fields.item_name;
@@ -201,7 +202,8 @@ function getFood() {
 
     // when a meal is completed, its respective position in the flagArray will be switched to true
     // thus, if it's flag is still false, we need to keep adding to it
-    // if it's true, then we move onto the next flagArray member, etc.	    
+    // if it's true, then we check the next flagArray member, until we find a false
+    // then we start pushing meal items that new array    
     if (flagArray[0] === false) {
       totalNutrition(1);
       finishedMealArray1.push(response.hits[randomAjaxMealIndex].fields);
@@ -250,8 +252,9 @@ function decideNextItem() {
   if (maxCalories <= 149) {
     console.log("not enough calories left");
 
-    // if we don't have enough calories to add another item, we cease to modify the current meal by modifying it's flag, 
-    // and we move onto populating the next meal
+    // if we don't have enough calories to add another item, we modify it's respective flag, 
+    // which will signal to stop modifying that meal 
+    // then we move onto populating the next meal
     if (flagArray[0] === false) {
       flagArray[0] = true;
       displayTotalNutrition(1);
